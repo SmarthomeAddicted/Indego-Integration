@@ -1,0 +1,9 @@
+{
+  "domain": "indego",
+  "name": "Bosch Indego Mower",
+  "documentation": "https://github.com/jm-73/Indego",
+  "dependencies": [],
+  "codeowners": ["@jm-73", "@eavanvalkenburg"],
+  "requirements": ["pyIndego==2.0.32","svgutils==0.3.4","sh==1.14.3"],
+  "version": "4.0.1"
+}

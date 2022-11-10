@@ -1,0 +1,42 @@
+command:
+  description: Send command to mower. Accepted values are mow, returnToDock and pause
+  fields:
+    command: 
+      description: Command for mower
+      example: "mow"
+smartmowing:
+  description: Enable or disable Smart Mowing. Accepted values are true and false
+  fields:
+    enable: 
+      description: Enable Smart Mow 
+      example: "true"
+download_map:
+  description: Download current Map without location of Mower 
+  fields:
+    filename: 
+      description: Download current Map 
+      example: "mapWithoutIndego"
+delete_alert:
+  description: Delete the selected Alert
+  fields:
+    alert_index: 
+      description: Delete the selected Alert in this case the latest
+      example: "0"
+read_alert:
+  description: Read the selected Alert
+  fields:
+    alert_index: 
+      description: marked the selected Alert as read
+      example: "0"
+delete_alert_all:
+  description: Delete the selected Alert
+  fields:
+    alert_index: 
+      description: Delete all Alerts
+      example: "0"
+read_alert_all:
+  description: Read the selected Alert
+  fields:
+    alert_index: 
+      description: marked all Alerts as read
+      example: "0"
