@@ -1,0 +1,567 @@
+type: vertical-stack
+cards:
+  - type: custom:mushroom-title-card
+    title: ''
+    subtitle: Boschi
+  - type: custom:stack-in-card
+    mode: vertical
+    cards:
+      - show_state: false
+        show_name: false
+        camera_view: auto
+        type: picture-entity
+        entity: camera.bosch_indego_map
+        tap_action:
+          action: none
+        hold_action:
+          action: none
+      - square: false
+        columns: 2
+        type: grid
+        cards:
+          - type: custom:mushroom-template-card
+            primary: Aktualisierung
+            secondary: |2-
+               vor {% set time = ((as_timestamp(now()) - as_timestamp(states.sensor.indego_127604973_mower_state_detail.last_changed))) | round(0) %}
+                                {% set minutes = ((time % 3600) / 60) | int %}
+                                {% set hours = ((time % 86400) / 3600) | int %}
+                                {% set days = (time / 86400) | int %}
+                                {%- if time < 60 -%}
+                                  weniger als einer Minute
+                                {%- else -%}
+                                  {%- if days > 0 -%}
+                                    {%- if days == 1 -%}
+                                      1 Tag
+                                    {%- else -%}
+                                      {{ days }} Tagen
+                                    {%- endif -%}
+                                  {%- endif -%}
+                                  {%- if hours > 0 -%}
+                                    {%- if days > 0 -%}
+                                      {{ ' und ' }}
+                                    {%- endif -%}
+                                    {%- if hours == 1 -%}
+                                      1 Stunde
+                                    {%- else -%}
+                                      {{ hours }} Stunden
+                                    {%- endif -%}
+                                  {%- endif -%}
+                                  {%- if minutes > 0 -%}
+                                    {%- if days > 0 or hours > 0 -%}
+                                      {{ ' und ' }}
+                                    {%- endif -%}
+                                    {%- if minutes == 1 -%}
+                                      1 Minute
+                                    {%- else -%}
+                                      {{ minutes }} Minuten
+                                    {%- endif -%}
+                                  {%- endif -%}
+                                {%- endif -%}
+            icon: mdi:update
+            multiline_secondary: false
+            entity: sensor.indego_127604973_mower_state_detail
+            picture: ''
+            tap_action:
+              action: none
+            hold_action:
+              action: none
+            double_tap_action:
+              action: none
+          - type: custom:mushroom-template-card
+            primary: Letztes Mal
+            secondary: |2-
+               vor {% set time = ((as_timestamp(now()) - as_timestamp(states('sensor.indego_127604973_last_completed')))) | round(0) %}
+                                {% set minutes = ((time % 3600) / 60) | int %}
+                                {% set hours = ((time % 86400) / 3600) | int %}
+                                {% set days = (time / 86400) | int %}
+                                {%- if time < 60 -%}
+                                  weniger als einer Minute
+                                {%- else -%}
+                                  {%- if days > 0 -%}
+                                    {%- if days == 1 -%}
+                                      1 Tag
+                                    {%- else -%}
+                                      {{ days }} Tagen
+                                    {%- endif -%}
+                                  {%- endif -%}
+                                  {%- if hours > 0 -%}
+                                    {%- if days > 0 -%}
+                                      {{ ' und ' }}
+                                    {%- endif -%}
+                                    {%- if hours == 1 -%}
+                                      1 Stunde
+                                    {%- else -%}
+                                      {{ hours }} Stunden
+                                    {%- endif -%}
+                                  {%- endif -%}
+                                  {%- if minutes > 0 -%}
+                                    {%- if days > 0 or hours > 0 -%}
+                                      {{ ' und ' }}
+                                    {%- endif -%}
+                                    {%- if minutes == 1 -%}
+                                      1 Minute
+                                    {%- else -%}
+                                      {{ minutes }} Minuten
+                                    {%- endif -%}
+                                  {%- endif -%}
+                                {%- endif -%}
+            icon: mdi:grass
+            entity: sensor.indego_127604973_runtime_last_mowing
+            multiline_secondary: false
+  - type: custom:mushroom-template-card
+    primary: '{{states(''sensor.indego_127604973_alert_headline'')}} '
+    secondary: >-
+      {% set alert_headline = states('sensor.indego_127604973_alert_message') 
+      %}
+
+      {% if alert_headline == 'Kein Problem' %}
+
+      {% else %}
+
+      {{states('sensor.indego_127604973_alert_message')}} 
+
+      {% endif %}
+    icon: |-
+      {% set state = states(entity) %}
+        {% if state ==  'Kein Problem' %} 
+          mdi:check-bold
+        {% else %}
+          mdi:alert-outline
+        {% endif %} 
+    entity: sensor.indego_127604973_alert_headline
+    multiline_secondary: true
+    fill_container: false
+    hold_action:
+      action: more-info
+    tap_action:
+      action: none
+    icon_color: |-
+      {% set count = states('sensor.indego_127604973_alert_count') | int %}
+      {% if count >= 1 %}
+      red
+      {% else %}
+      green
+      {% endif %}
+    double_tap_action:
+      confirmation:
+        text: Möchtest du die Benachrichtigung wirklich löschen ?
+      action: call-service
+      service: indego.delete_alert
+      target: {}
+      data:
+        alert_index: 0
+    badge_icon: |-
+      {% set count = states('sensor.indego_127604973_alert_count') | int %}
+      {% if count == 0 %}
+
+      {% elif count == 1 %}
+      mdi:numeric-1
+      {% elif count == 2 %}
+      mdi:numeric-2
+      {% elif count == 3 %}
+      mdi:numeric-3
+      {% elif count == 4 %}
+      mdi:numeric-4
+      {% elif count == 5 %}
+      mdi:numeric-5
+      {% elif count == 6 %}
+      mdi:numeric-6
+      {% elif count == 7 %}
+      mdi:numeric-7
+      {% elif count == 8 %}
+      mdi:numeric-8
+      {% elif count == 9 %}
+      mdi:numeric-9
+      {% elif count == 10 %}
+      mdi:numeric-10
+
+      {% else %}
+      mdi:numeric
+      {% endif %}
+    badge_color: |-
+      {% set count = states('sensor.indego_127604973_alert_count') | int %}
+
+      {% if count >= 1 %}
+      red
+      {% endif %}
+  - type: custom:stack-in-card
+    mode: horizontal
+    cards:
+      - type: custom:mushroom-template-card
+        primary: ''
+        secondary: '{{states(entity)}}%'
+        icon: |2-
+            {% set battery_level = (states(entity) | int / 10) | round(0) | int * 10 %}
+            {% if is_state('sensor.indego_127604973_mower_state_detail', 'Charging' ) %}
+              {% if battery_level > 0 %}
+                mdi:battery-charging-{{ battery_level }}
+              {% else %}
+                mdi:battery-charging-outline
+              {% endif %}
+            {% else %}
+              {% if battery_level == 100 %}
+                mdi:battery
+              {% elif battery_level > 0 %}
+                mdi:battery-{{ battery_level }}
+              {% else %}
+                mdi:battery-alert-variant-outline
+              {% endif %}
+            {% endif %}
+        layout: vertical
+        entity: sensor.indego_127604973_operatingdata_battery_percent_adjusted
+        fill_container: false
+        icon_color: |-
+          {% set state = states(entity) | int %}
+            {% if state > 90 %} 
+              green
+            {% elif state > 60 %}
+              light-green
+            {% elif state > 50 %}
+              lime
+            {% elif state > 40 %}
+              yellow
+            {% elif state > 30 %}
+              amber
+            {% elif state > 20 %}
+              orange
+            {% elif state > 10 %}
+              deep-orange
+            {% else %}
+              red
+            {% endif %} 
+        multiline_secondary: false
+        tap_action:
+          action: none
+        hold_action:
+          action: more-info
+        double_tap_action:
+          action: none
+      - type: custom:mushroom-template-card
+        primary: ''
+        secondary: '{{states(entity)}} %'
+        icon: mdi:grass
+        layout: vertical
+        icon_color: |-
+          {% set state = states(entity) | int %}
+            {% if state > 90 %} 
+              green
+            {% elif state > 60 %}
+              light-green
+            {% elif state > 50 %}
+              lime
+            {% elif state > 40 %}
+              yellow
+            {% elif state > 30 %}
+              amber
+            {% elif state > 20 %}
+              orange
+            {% elif state > 10 %}
+              deep-orange
+            {% else %}
+              red
+            {% endif %} 
+        entity: sensor.indego_127604973_state_lawn_mowed
+        tap_action:
+          action: none
+        hold_action:
+          action: more-info
+        double_tap_action:
+          action: none
+      - type: custom:mushroom-template-card
+        primary: ''
+        secondary: |-
+          {% set state = states(entity) | int %}
+            {% if state == 101 %} 
+              Mäher angehoben
+            {% elif state == 257 %}
+              Laden
+            {% elif state == 258 %}
+              Angedockt
+            {% elif state == 259 %}
+              Software update
+            {% elif state == 260 %}
+              Angedockt
+            {% elif state == 261 %}
+              Angedockt
+            {% elif state == 262 %}
+              Karte laden
+            {% elif state == 263 %}
+              Karte speichern
+            {% elif state == 266 %}
+              Verlasse Ladestation
+            {% elif state == 512 %}
+              Verlasse Ladestation
+            {% elif state == 513 %}
+              Mähen
+            {% elif state == 514 %}
+              Lokalisieren
+            {% elif state == 515 %}
+              Karte laden
+            {% elif state == 516 %}
+              Lernen
+            {% elif state == 517 %}
+              Pause
+            {% elif state == 518 %}
+              Randmähen
+            {% elif state == 519 %}
+              Leerlauf
+            {% elif state == 521 %}
+              Randmähen
+            {% elif state == 523 %}
+              Spot mähen
+            {% elif state == 524 %}
+              Zufallsmähen
+            {% elif state == 525 %}
+              Zufallsmähen beendent
+            {% elif state == 768 %}
+              Rückkehr zur Ladestation
+            {% elif state == 769 %}
+              Rückkehr zur Ladestation
+            {% elif state == 770 %}
+              Rückkehr zur Ladestation
+            {% elif state == 771 %}
+              Akku schwach
+            {% elif state == 772 %}
+              Zeitslot beendet
+            {% elif state == 773 %}
+              Battery Temperatur
+            {% elif state == 774 %}
+              Rückkehr zur Ladestation
+            {% elif state == 775 %}
+              Mähen beendet
+            {% elif state == 776 %}
+              Lokalisieren
+            {% elif state == 1005 %}
+              Verbindung zur Dockingstation fehlerhaft
+            {% elif state == 1025 %}
+              Diagnosemodus
+            {% elif state == 1026 %}
+              End of Life
+            {% elif state == 1027 %}
+              Wartung notwendig
+            {% elif state == 1038 %}
+              Mäher gesperrt
+            {% elif state == 1281 %}
+              Software update
+            {% elif state == 1537 %}
+              Hilfe notwendig
+            {% elif state == 64513 %}
+              Schläft
+            {% elif state == 99999 %}
+              Offline
+            {% else %}
+              Status abrufen
+            {% endif %} 
+        icon: |-
+          {% set state = states(entity) | int %}
+            {% if state == 101 %} 
+              mdi:robot-mower-outline
+            {% elif state == 257 %}
+              mdi:ev-station
+            {% elif state == 258 %}
+              mdi:home
+            {% elif state == 259 %}
+              mdi:download
+            {% elif state == 260 %}
+              mdi:home
+            {% elif state == 261 %}
+              mdi:home
+            {% elif state == 262 %}
+              mdi:map-search-outline
+            {% elif state == 263 %}
+              mdi:map-clock-outline
+            {% elif state == 266 %}
+              mdi:home-export-outline
+            {% elif state == 512 %}
+              mdi:home-export-outline
+            {% elif state == 513 %}
+              mdi:robot-mower-outline
+            {% elif state == 514 %}
+              mdi:map-marker-radius-outline
+            {% elif state == 515 %}
+              mdi:map-search-outline
+            {% elif state == 516 %}
+              mdi:school-outline
+            {% elif state == 517 %}
+              mdi:pause
+            {% elif state == 518 %}
+              mdi:border-none-variant
+            {% elif state == 519 %}
+              mdi:robot-mower-outline
+            {% elif state == 520 %}
+              mdi:robot-mower-outline
+            {% elif state == 521 %}
+              mdi:trending-neutral
+            {% elif state == 523 %}
+              mdi:trobot-mower-outline
+            {% elif state == 524 %}
+              mdi:robot-mower-outline
+            {% elif state == 525 %}
+              mdi:robot-mower-outline
+            {% elif state == 768 %}
+              mdi:home-import-outline
+            {% elif state == 769 %}
+              mdi:home-import-outline
+            {% elif state == 770 %}
+              mdi:home-import-outline
+            {% elif state == 770 %}
+              mdi:home-import-outline
+            {% elif state == 771 %}
+              mdi:battery-outline
+            {% elif state == 772 %}
+              mdi:map-clock
+            {% elif state == 773 %}
+              mdi:thermometer-alert
+            {% elif state == 774 %}
+              mdi:home-import-outline
+            {% elif state == 775 %}
+              mdi:check-bold
+            {% elif state == 776 %}
+              mdi:map-marker-radius-outline
+            {% elif state == 1005 %}
+              mdi:message-alert-outline
+            {% elif state == 1025 %}
+              mdi:account-wrench-outline
+            {% elif state == 1026 %}
+              mdi:coffin
+            {% elif state == 1027 %}
+              mdi:account-wrench-outline
+            {% elif state == 1038 %}
+              mdi:lock
+            {% elif state == 1281 %}
+              mdi:download
+            {% elif state == 1537 %}
+              mdi:handshake
+            {% elif state == 64513 %}
+              mdi:sleep
+            {% elif state == 99999 %}
+              mdi:minus-box
+            {% else %}
+              mdi:web-refresh
+            {% endif %} 
+        layout: vertical
+        icon_color: ''
+        entity: sensor.indego_127604973_state_state
+        fill_container: false
+        tap_action:
+          action: none
+        hold_action:
+          action: more-info
+        double_tap_action:
+          action: none
+      - type: custom:mushroom-template-card
+        primary: ''
+        secondary: |-
+          {% set state = states(entity) %}
+            {% if state ==  'off' %} 
+              Offline
+            {% elif state == 'on' %}
+              Online
+            {% else %}
+              {{states(entity)}} 
+            {% endif %} 
+        icon: |-
+          {% set state = states(entity) %}
+            {% if state ==  'off' %} 
+              mdi:cloud-alert
+            {% elif state == 'on' %}
+              mdi:cloud-check
+            {% else %}
+              mdi:cloud-braces
+            {% endif %} 
+        layout: vertical
+        icon_color: |-
+          {% set state = states(entity) %}
+            {% if state ==  'on' %} 
+              green
+            {% elif state == 'off' %}
+              red
+            {% else %}
+              orange
+            {% endif %} 
+        entity: binary_sensor.indego_127604973_online
+        tap_action:
+          action: none
+        hold_action:
+          action: more-info
+        double_tap_action:
+          action: none
+      - type: custom:mushroom-template-card
+        primary: ''
+        secondary: |-
+          {% set state = states(entity) %}
+            {% if state ==  'off' %} 
+              Aktuell
+            {% elif state == 'on' %}
+              Verfügbar
+            {% else %}
+              {{states(entity)}} 
+            {% endif %} 
+        icon: mdi:upload
+        layout: vertical
+        icon_color: |-
+          {% set state = states(entity) %}
+            {% if state ==  'off' %} 
+              green
+            {% elif state == 'on' %}
+              red
+            {% else %}
+              orange
+            {% endif %} 
+        entity: binary_sensor.indego_127604973_update_available
+        tap_action:
+          action: none
+        hold_action:
+          action: more-info
+        multiline_secondary: false
+        double_tap_action:
+          action: none
+  - square: false
+    columns: 3
+    type: grid
+    cards:
+      - type: custom:mushroom-template-card
+        primary: Mähen
+        secondary: ''
+        icon: mdi:play
+        tap_action:
+          action: call-service
+          service: indego.command
+          data:
+            command: mow
+          target: {}
+        hold_action:
+          action: none
+        layout: vertical
+        double_tap_action:
+          action: none
+      - type: custom:mushroom-template-card
+        primary: Pause
+        secondary: ''
+        icon: mdi:pause
+        tap_action:
+          action: call-service
+          service: indego.command
+          data:
+            command: pause
+          target: {}
+        layout: vertical
+        hold_action:
+          action: none
+        double_tap_action:
+          action: none
+      - type: custom:mushroom-template-card
+        primary: Ladestation
+        secondary: ''
+        icon: mdi:home
+        tap_action:
+          action: call-service
+          service: indego.command
+          data:
+            command: returnToDock
+          target: {}
+        layout: vertical
+        hold_action:
+          action: none
+        double_tap_action:
+          action: none
