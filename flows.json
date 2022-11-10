@@ -1,0 +1,756 @@
+[
+    {
+        "id": "0626c1a32c876d04",
+        "type": "server-state-changed",
+        "z": "6e7d784b95b899f2",
+        "name": "get alert Count",
+        "server": "ef57f68ba529f5c6",
+        "version": 4,
+        "exposeToHomeAssistant": false,
+        "haConfig": [
+            {
+                "property": "name",
+                "value": ""
+            },
+            {
+                "property": "icon",
+                "value": ""
+            }
+        ],
+        "entityidfilter": "sensor.indego_127604973_alert_count",
+        "entityidfiltertype": "exact",
+        "outputinitially": false,
+        "state_type": "num",
+        "haltifstate": "0",
+        "halt_if_type": "num",
+        "halt_if_compare": "gt",
+        "outputs": 2,
+        "output_only_on_state_change": true,
+        "for": "0",
+        "forType": "num",
+        "forUnits": "minutes",
+        "ignorePrevStateNull": false,
+        "ignorePrevStateUnknown": false,
+        "ignorePrevStateUnavailable": false,
+        "ignoreCurrentStateUnknown": false,
+        "ignoreCurrentStateUnavailable": false,
+        "outputProperties": [
+            {
+                "property": "payload",
+                "propertyType": "msg",
+                "value": "",
+                "valueType": "entityState"
+            },
+            {
+                "property": "data",
+                "propertyType": "msg",
+                "value": "",
+                "valueType": "eventData"
+            },
+            {
+                "property": "topic",
+                "propertyType": "msg",
+                "value": "",
+                "valueType": "triggerId"
+            }
+        ],
+        "x": 100,
+        "y": 120,
+        "wires": [
+            [
+                "925efa68a3784d33"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "e02fef93f15bcbc6",
+        "type": "api-current-state",
+        "z": "6e7d784b95b899f2",
+        "name": "get Alert Headline",
+        "server": "ef57f68ba529f5c6",
+        "version": 3,
+        "outputs": 1,
+        "halt_if": "",
+        "halt_if_type": "str",
+        "halt_if_compare": "is",
+        "entity_id": "sensor.indego_127604973_alert_headline",
+        "state_type": "str",
+        "blockInputOverrides": false,
+        "outputProperties": [
+            {
+                "property": "payload_headline",
+                "propertyType": "msg",
+                "value": "",
+                "valueType": "entityState"
+            },
+            {
+                "property": "data",
+                "propertyType": "msg",
+                "value": "",
+                "valueType": "entity"
+            }
+        ],
+        "for": "0",
+        "forType": "num",
+        "forUnits": "minutes",
+        "override_topic": false,
+        "state_location": "payload",
+        "override_payload": "msg",
+        "entity_location": "data",
+        "override_data": "msg",
+        "x": 550,
+        "y": 100,
+        "wires": [
+            [
+                "e654c26663f6c27a"
+            ]
+        ]
+    },
+    {
+        "id": "e6aec62523fa2f34",
+        "type": "api-call-service",
+        "z": "6e7d784b95b899f2",
+        "name": "send notification to Christians iPhone",
+        "server": "ef57f68ba529f5c6",
+        "version": 5,
+        "debugenabled": false,
+        "domain": "notify",
+        "service": "mobile_app_christians_iphone",
+        "areaId": [],
+        "deviceId": [],
+        "entityId": [],
+        "data": "{\"title\":\"Boschi\",\"message\":\"{{payload_headline}}\\n{{payload_message}}\",\"data\":{\"push\":{\"category\":\"lawnmower_notification\",\"thread-id\":\"notification_group_facility\"}}}",
+        "dataType": "json",
+        "mergeContext": "",
+        "mustacheAltTags": false,
+        "outputProperties": [],
+        "queue": "none",
+        "x": 1110,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e654c26663f6c27a",
+        "type": "api-current-state",
+        "z": "6e7d784b95b899f2",
+        "name": "get Alert Message",
+        "server": "ef57f68ba529f5c6",
+        "version": 3,
+        "outputs": 1,
+        "halt_if": "",
+        "halt_if_type": "str",
+        "halt_if_compare": "is",
+        "entity_id": "sensor.indego_127604973_alert_message",
+        "state_type": "str",
+        "blockInputOverrides": false,
+        "outputProperties": [
+            {
+                "property": "payload_message",
+                "propertyType": "msg",
+                "value": "",
+                "valueType": "entityState"
+            },
+            {
+                "property": "data",
+                "propertyType": "msg",
+                "value": "",
+                "valueType": "entity"
+            }
+        ],
+        "for": "0",
+        "forType": "num",
+        "forUnits": "minutes",
+        "override_topic": false,
+        "state_location": "payload",
+        "override_payload": "msg",
+        "entity_location": "data",
+        "override_data": "msg",
+        "x": 790,
+        "y": 100,
+        "wires": [
+            [
+                "e6aec62523fa2f34"
+            ]
+        ]
+    },
+    {
+        "id": "a352babb4c7689a9",
+        "type": "server-events",
+        "z": "6e7d784b95b899f2",
+        "name": "get action from notification",
+        "server": "ef57f68ba529f5c6",
+        "version": 2,
+        "eventType": "ios.notification_action_fired",
+        "exposeToHomeAssistant": false,
+        "eventData": "",
+        "haConfig": [
+            {
+                "property": "name",
+                "value": ""
+            },
+            {
+                "property": "icon",
+                "value": ""
+            }
+        ],
+        "waitForRunning": true,
+        "outputProperties": [
+            {
+                "property": "payload",
+                "propertyType": "msg",
+                "value": "",
+                "valueType": "eventData"
+            },
+            {
+                "property": "topic",
+                "propertyType": "msg",
+                "value": "$outputData(\"eventData\").event_type",
+                "valueType": "jsonata"
+            },
+            {
+                "property": "result",
+                "propertyType": "msg",
+                "value": "$outputData(\"eventData\").event.actionName",
+                "valueType": "jsonata"
+            },
+            {
+                "property": "timestamp",
+                "propertyType": "msg",
+                "value": "",
+                "valueType": "date"
+            }
+        ],
+        "x": 130,
+        "y": 220,
+        "wires": [
+            [
+                "b04aeb51acf3beea"
+            ]
+        ]
+    },
+    {
+        "id": "b04aeb51acf3beea",
+        "type": "switch",
+        "z": "6e7d784b95b899f2",
+        "name": "evaluate action",
+        "property": "result",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "LAWNMOWER.YES",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 360,
+        "y": 220,
+        "wires": [
+            [
+                "3f37a17adab1feaa"
+            ]
+        ]
+    },
+    {
+        "id": "3f37a17adab1feaa",
+        "type": "api-call-service",
+        "z": "6e7d784b95b899f2",
+        "name": "delete alert",
+        "server": "ef57f68ba529f5c6",
+        "version": 5,
+        "debugenabled": false,
+        "domain": "indego",
+        "service": "delete_alert",
+        "areaId": [],
+        "deviceId": [],
+        "entityId": [],
+        "data": "{\"alert_index\":\"0\"}",
+        "dataType": "jsonata",
+        "mergeContext": "",
+        "mustacheAltTags": false,
+        "outputProperties": [],
+        "queue": "none",
+        "x": 550,
+        "y": 220,
+        "wires": [
+            [
+                "0e9ceadfb627f76c"
+            ]
+        ]
+    },
+    {
+        "id": "0e9ceadfb627f76c",
+        "type": "api-current-state",
+        "z": "6e7d784b95b899f2",
+        "name": "get alert count",
+        "server": "ef57f68ba529f5c6",
+        "version": 3,
+        "outputs": 2,
+        "halt_if": "0",
+        "halt_if_type": "num",
+        "halt_if_compare": "is",
+        "entity_id": "sensor.indego_127604973_alert_count",
+        "state_type": "num",
+        "blockInputOverrides": false,
+        "outputProperties": [
+            {
+                "property": "payload_headline",
+                "propertyType": "msg",
+                "value": "",
+                "valueType": "entityState"
+            },
+            {
+                "property": "data",
+                "propertyType": "msg",
+                "value": "",
+                "valueType": "entity"
+            }
+        ],
+        "for": "0",
+        "forType": "num",
+        "forUnits": "minutes",
+        "override_topic": false,
+        "state_location": "payload",
+        "override_payload": "msg",
+        "entity_location": "data",
+        "override_data": "msg",
+        "x": 820,
+        "y": 220,
+        "wires": [
+            [
+                "ea228fa8244eb866"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "ea228fa8244eb866",
+        "type": "api-call-service",
+        "z": "6e7d784b95b899f2",
+        "name": "send notification to Christians iPhone",
+        "server": "ef57f68ba529f5c6",
+        "version": 5,
+        "debugenabled": false,
+        "domain": "notify",
+        "service": "mobile_app_christians_iphone",
+        "areaId": [],
+        "deviceId": [],
+        "entityId": [],
+        "data": "{\"title\":\"Boschi\",\"message\":\"Fehlermeldung wurde gelöscht\",\"data\":{\"push\":{\"thread-id\":\"notification_group_facility\"}}}",
+        "dataType": "json",
+        "mergeContext": "",
+        "mustacheAltTags": false,
+        "outputProperties": [],
+        "queue": "none",
+        "x": 1110,
+        "y": 200,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "f9277f882528428c",
+        "type": "comment",
+        "z": "6e7d784b95b899f2",
+        "name": "Boschi",
+        "info": "",
+        "x": 70,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "edb8f9fb4d2c0853",
+        "type": "server-state-changed",
+        "z": "6e7d784b95b899f2",
+        "name": "if lawn mowed",
+        "server": "ef57f68ba529f5c6",
+        "version": 4,
+        "exposeToHomeAssistant": false,
+        "haConfig": [
+            {
+                "property": "name",
+                "value": ""
+            },
+            {
+                "property": "icon",
+                "value": ""
+            }
+        ],
+        "entityidfilter": "sensor.indego_127604973_state_lawn_mowed",
+        "entityidfiltertype": "exact",
+        "outputinitially": false,
+        "state_type": "str",
+        "haltifstate": "93",
+        "halt_if_type": "num",
+        "halt_if_compare": "gt",
+        "outputs": 2,
+        "output_only_on_state_change": true,
+        "for": "0",
+        "forType": "num",
+        "forUnits": "minutes",
+        "ignorePrevStateNull": false,
+        "ignorePrevStateUnknown": false,
+        "ignorePrevStateUnavailable": false,
+        "ignoreCurrentStateUnknown": false,
+        "ignoreCurrentStateUnavailable": false,
+        "outputProperties": [
+            {
+                "property": "payload",
+                "propertyType": "msg",
+                "value": "",
+                "valueType": "entityState"
+            },
+            {
+                "property": "data",
+                "propertyType": "msg",
+                "value": "",
+                "valueType": "eventData"
+            },
+            {
+                "property": "topic",
+                "propertyType": "msg",
+                "value": "",
+                "valueType": "triggerId"
+            }
+        ],
+        "x": 90,
+        "y": 300,
+        "wires": [
+            [
+                "88c961a602b343bd"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "77b50514fd176914",
+        "type": "api-call-service",
+        "z": "6e7d784b95b899f2",
+        "name": "send notification to Christians iPhone",
+        "server": "ef57f68ba529f5c6",
+        "version": 5,
+        "debugenabled": false,
+        "domain": "notify",
+        "service": "mobile_app_christians_iphone",
+        "areaId": [],
+        "deviceId": [],
+        "entityId": [],
+        "data": "{\"title\":\"Boschi\",\"message\":\"Rasenfläche wurde vollständig gemäht.\\nLaufzeit gesamt: {{payload_last_operation}}Min\\nLaufzeit gemäht: {{payload_last_mowing}}Min\\nLaufzeit geladen: {{payload_last_charging}}Min\",\"data\":{\"push\":{\"thread-id\":\"notification_group_facility\"}}}",
+        "dataType": "json",
+        "mergeContext": "",
+        "mustacheAltTags": false,
+        "outputProperties": [],
+        "queue": "none",
+        "x": 1110,
+        "y": 300,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "88c961a602b343bd",
+        "type": "api-current-state",
+        "z": "6e7d784b95b899f2",
+        "name": "get runtime last charging",
+        "server": "ef57f68ba529f5c6",
+        "version": 3,
+        "outputs": 1,
+        "halt_if": "",
+        "halt_if_type": "str",
+        "halt_if_compare": "is",
+        "entity_id": "sensor.indego_127604973_runtime_last_charging",
+        "state_type": "str",
+        "blockInputOverrides": false,
+        "outputProperties": [
+            {
+                "property": "payload_last_charging",
+                "propertyType": "msg",
+                "value": "",
+                "valueType": "entityState"
+            },
+            {
+                "property": "data",
+                "propertyType": "msg",
+                "value": "",
+                "valueType": "entity"
+            }
+        ],
+        "for": "0",
+        "forType": "num",
+        "forUnits": "minutes",
+        "override_topic": false,
+        "state_location": "payload",
+        "override_payload": "msg",
+        "entity_location": "data",
+        "override_data": "msg",
+        "x": 310,
+        "y": 300,
+        "wires": [
+            [
+                "30b25c7d0f03b765"
+            ]
+        ]
+    },
+    {
+        "id": "30b25c7d0f03b765",
+        "type": "api-current-state",
+        "z": "6e7d784b95b899f2",
+        "name": "get runtime last operation",
+        "server": "ef57f68ba529f5c6",
+        "version": 3,
+        "outputs": 1,
+        "halt_if": "",
+        "halt_if_type": "str",
+        "halt_if_compare": "is",
+        "entity_id": "sensor.indego_127604973_runtime_last_operation",
+        "state_type": "str",
+        "blockInputOverrides": false,
+        "outputProperties": [
+            {
+                "property": "payload_last_operation",
+                "propertyType": "msg",
+                "value": "",
+                "valueType": "entityState"
+            },
+            {
+                "property": "data",
+                "propertyType": "msg",
+                "value": "",
+                "valueType": "entity"
+            }
+        ],
+        "for": "0",
+        "forType": "num",
+        "forUnits": "minutes",
+        "override_topic": false,
+        "state_location": "payload",
+        "override_payload": "msg",
+        "entity_location": "data",
+        "override_data": "msg",
+        "x": 570,
+        "y": 300,
+        "wires": [
+            [
+                "a74d715427af2677"
+            ]
+        ]
+    },
+    {
+        "id": "a74d715427af2677",
+        "type": "api-current-state",
+        "z": "6e7d784b95b899f2",
+        "name": "get runtime last mowing",
+        "server": "ef57f68ba529f5c6",
+        "version": 3,
+        "outputs": 1,
+        "halt_if": "",
+        "halt_if_type": "str",
+        "halt_if_compare": "is",
+        "entity_id": "sensor.indego_127604973_runtime_last_mowing",
+        "state_type": "str",
+        "blockInputOverrides": false,
+        "outputProperties": [
+            {
+                "property": "payload_last_mowing",
+                "propertyType": "msg",
+                "value": "",
+                "valueType": "entityState"
+            },
+            {
+                "property": "data",
+                "propertyType": "msg",
+                "value": "",
+                "valueType": "entity"
+            }
+        ],
+        "for": "0",
+        "forType": "num",
+        "forUnits": "minutes",
+        "override_topic": false,
+        "state_location": "payload",
+        "override_payload": "msg",
+        "entity_location": "data",
+        "override_data": "msg",
+        "x": 810,
+        "y": 300,
+        "wires": [
+            [
+                "77b50514fd176914"
+            ]
+        ]
+    },
+    {
+        "id": "eb424e0343069c41",
+        "type": "server-state-changed",
+        "z": "6e7d784b95b899f2",
+        "name": "if lawn mowed",
+        "server": "ef57f68ba529f5c6",
+        "version": 4,
+        "exposeToHomeAssistant": false,
+        "haConfig": [
+            {
+                "property": "name",
+                "value": ""
+            },
+            {
+                "property": "icon",
+                "value": ""
+            }
+        ],
+        "entityidfilter": "sensor.indego_127604973_state_state",
+        "entityidfiltertype": "exact",
+        "outputinitially": false,
+        "state_type": "str",
+        "haltifstate": "",
+        "halt_if_type": "num",
+        "halt_if_compare": "gt",
+        "outputs": 1,
+        "output_only_on_state_change": true,
+        "for": "0",
+        "forType": "num",
+        "forUnits": "minutes",
+        "ignorePrevStateNull": false,
+        "ignorePrevStateUnknown": false,
+        "ignorePrevStateUnavailable": false,
+        "ignoreCurrentStateUnknown": false,
+        "ignoreCurrentStateUnavailable": false,
+        "outputProperties": [
+            {
+                "property": "payload",
+                "propertyType": "msg",
+                "value": "",
+                "valueType": "entityState"
+            },
+            {
+                "property": "data",
+                "propertyType": "msg",
+                "value": "",
+                "valueType": "eventData"
+            },
+            {
+                "property": "topic",
+                "propertyType": "msg",
+                "value": "",
+                "valueType": "triggerId"
+            }
+        ],
+        "x": 90,
+        "y": 380,
+        "wires": [
+            [
+                "31b6271f4f84c3fa"
+            ]
+        ]
+    },
+    {
+        "id": "31b6271f4f84c3fa",
+        "type": "switch",
+        "z": "6e7d784b95b899f2",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "513",
+                "vt": "num"
+            },
+            {
+                "t": "eq",
+                "v": "523",
+                "vt": "num"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 2,
+        "x": 510,
+        "y": 380,
+        "wires": [
+            [
+                "5afa4b49fc8e918f"
+            ],
+            [
+                "5afa4b49fc8e918f"
+            ]
+        ]
+    },
+    {
+        "id": "5afa4b49fc8e918f",
+        "type": "api-call-service",
+        "z": "6e7d784b95b899f2",
+        "name": "send notification to Christians iPhone",
+        "server": "ef57f68ba529f5c6",
+        "version": 5,
+        "debugenabled": false,
+        "domain": "notify",
+        "service": "mobile_app_christians_iphone",
+        "areaId": [],
+        "deviceId": [],
+        "entityId": [],
+        "data": "{\"title\":\"Boschi\",\"message\":\"Mähen wurde gestartet.\",\"data\":{\"push\":{\"thread-id\":\"notification_group_facility\"}}}",
+        "dataType": "json",
+        "mergeContext": "",
+        "mustacheAltTags": false,
+        "outputProperties": [],
+        "queue": "none",
+        "x": 1110,
+        "y": 380,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "925efa68a3784d33",
+        "type": "delay",
+        "z": "6e7d784b95b899f2",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "30",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 330,
+        "y": 100,
+        "wires": [
+            [
+                "e02fef93f15bcbc6"
+            ]
+        ]
+    },
+    {
+        "id": "ef57f68ba529f5c6",
+        "type": "server",
+        "name": "Home Assistant",
+        "version": 5,
+        "addon": false,
+        "rejectUnauthorizedCerts": false,
+        "ha_boolean": "y|yes|true|on|home|open",
+        "connectionDelay": true,
+        "cacheJson": true,
+        "heartbeat": false,
+        "heartbeatInterval": "30",
+        "areaSelector": "friendlyName",
+        "deviceSelector": "friendlyName",
+        "entitySelector": "friendlyName",
+        "statusSeparator": "at: ",
+        "statusYear": "hidden",
+        "statusMonth": "short",
+        "statusDay": "numeric",
+        "statusHourCycle": "h23",
+        "statusTimeFormat": "h:m",
+        "enableGlobalContextStore": true
+    }
+]
