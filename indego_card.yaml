@@ -3,14 +3,14 @@ cards:
   - type: custom:mushroom-title-card
     title: ''
     subtitle: Boschi
-  - type: custom:stack-in-card
-    mode: vertical
+  - type: custom:vertical-stack-in-card
     cards:
       - show_state: false
         show_name: false
         camera_view: auto
         type: picture-entity
         entity: camera.bosch_indego_map
+        image: https://demo.home-assistant.io/stub_config/bedroom.png
         tap_action:
           action: none
         hold_action:
@@ -184,8 +184,8 @@ cards:
       {% if count >= 1 %}
       red
       {% endif %}
-  - type: custom:stack-in-card
-    mode: horizontal
+  - type: custom:vertical-stack-in-card
+    horizontal: true
     cards:
       - type: custom:mushroom-template-card
         primary: ''
